@@ -1,0 +1,150 @@
+.repeater label{
+	display: inline-block;
+}
+ .repeater .table{
+ 	border: 0;
+ 	margin-bottom: 0px;
+ }
+ .repeater .table tr:last-child {
+	border-bottom: 0;
+}
+.fuelux .repeater-footer {
+	border-top: 0px solid #ddd;
+}
+.bulk-action{
+	min-width: 170px;
+	margin-bottom: 0px;
+}
+.bulk-action select{
+	width: 100px
+}
+#bulk-action .input.inline select {
+	margin-bottom: 0px;
+}
+.repeater-views{
+	margin: 0 5px;
+}
+.fuelux .repeater-list-items tr.selected td:first-child {
+	padding-left: 8px;
+}
+.fuelux .repeater-list-items tr.selected td {
+	background-color: #b9e3f7;
+	color: #000;
+}
+
+.fuelux .repeater-list-items tr:focus
+{
+	outline: none;
+}
+.fuelux tr td.no-visible
+{
+	display: none;
+}
+.fuelux tr td:first-child
+{
+	border-left: none;
+}
+
+.modal input,.modal select,.modal textarea{
+	width: 75%;
+}
+.modal .modal-body label{
+	display :inline-block;
+	width: 25%;
+}
+.modal form {
+	margin: 0;
+}
+
+.modal .loader {
+	display: none;
+	left: 50%;
+	position: absolute;
+	margin: -32px 0 0 -32px;
+	top: 50%;
+}
+.fuelux .selectlist button{
+	white-space: nowrap !important;
+	margin-right: -2px !important;;
+}
+.fuelux .repeater-search {
+	min-width: 300px ;
+}
+.fuelux .repeater-search input.form-control{
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.modal .modal-footer .checkbox {
+	display: inline-block;
+}
+.modal .modal-footer .checkbox label{
+	display: inline-block;
+}
+.modal .modal-footer .btn-danger{
+	margin-left: 80px;
+}
+
+.modal .modal-body .checkbox {
+	display: block;
+	position: relative;
+	padding-left: 0;
+}
+.modal .modal-body .checkbox label{
+	position: absolute;
+	left: 0px;
+	padding-left: 0;
+	font-weight: bold;
+}
+
+.modal .modal-body .checkbox input{
+	position: absolute;
+	left: 145px;
+}
+.modal .modal-body {
+	padding: 5px 15px;
+	max-height: 420px;
+}
+.input.submit, .input.select, .input.radio, .input.checkbox, .input.password, .input.datetime, .input.date, .input.email, .input.file, .input.tel, .input.time, .input.number, .input.textarea, .input.text {
+	margin: 2px;
+}
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+	display: inline-block;
+	height: 34px;
+	padding: 4px 6px;
+	margin-bottom: 10px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #555;
+	vertical-align: middle;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+select {
+	width: 220px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+	-webkit-transition: border linear .2s,box-shadow linear .2s;
+	-moz-transition: border linear .2s,box-shadow linear .2s;
+	-o-transition: border linear .2s,box-shadow linear .2s;
+	transition: border linear .2s,box-shadow linear .2s;
+}
+.repeater-header select{
+	margin-bottom: 0px;
+}
+table .item-actions a {
+	margin-right: 10px;
+}
+table .item-actions a.icon-trash, table .item-actions a.delete {
+color: #9d261d;
+}
+.modal-backdrop.in{
+	z-index: 3;
+}
