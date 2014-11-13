@@ -6,9 +6,7 @@ CakePHP Template for generate Ajax crud, saving you tons of time and having a le
 # Version notice
 
 * This is an unstable repository and should be treated as an alpha.
-
 * The master and develop branches only works for CakePHP 2.x
-
 
 # Introduction
 
