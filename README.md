@@ -21,7 +21,7 @@ AjaxTemplate  was built to generate ajax crud gui in few seconds, it allow devel
 # Installation
 
 * Clone the AjaxTemplate plugin into your project plugin directory.
-* Load the AjaxTemplate plugin by editing config/bootstrap.php `CakePlugin::load('AjaxTemplate')`;
+* Load the plugin by editing config/bootstrap.php `CakePlugin::load('AjaxTemplate')`;
 * Enable json extensions parse by editing config/routes.php `Router::parseExtensions('json');`;
 * Start baking! If you've never used the console, here's a great tutorial: [http://book.cakephp.org/2.0/en/console-and-shells/code-generation-with-bake.html](http://book.cakephp.org/2.0/en/console-and-shells/code-generation-with-bake.html)
 * Make sure that the RequestHandler component is loaded
