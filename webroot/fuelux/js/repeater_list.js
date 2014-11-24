@@ -212,8 +212,11 @@
 				$.each(self.options.data.columns, function (index, column) {
 					field = column.property;
 					tmp = field.split('.');
-					if(tmp.length > 1)
+					if(tmp.length == 2)
 						$item.append(renderCell(row[tmp[0]][tmp[1]], column));
+					else
+					if(tmp.length == 3)
+						$item.append(renderCell(row[tmp[0]][tmp[1]][tmp[2]], column));
 					else
 						$item.append(renderCell(row[field], column));
 				});
@@ -221,7 +224,7 @@
 				return $item;
 			};
 			this.$canvas.find('.repeater-list-items tr.selected').removeClass('selected');
-			this.$canvas.find( '.repeater-list-items tbody' ).append(renderRow(row));
+			this.$canvas.find( 'tbody.repeater-list-items' ).append(renderRow(row));
 			this.resize();
 			
 			_data.push(row);
