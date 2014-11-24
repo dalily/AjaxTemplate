@@ -265,7 +265,11 @@
 					field = self.options.data.columns[index].property;
 					tmp = field.split('.');
 
-					$(this).html(updated_row[tmp[0]][tmp[1]]);
+					if(tmp.length == 2)
+						$(this).html(updated_row[tmp[0]][tmp[1]]);
+					else
+					if(tmp.length == 3)
+						$(this).html(updated_row[tmp[0]][tmp[1]][tmp[2]]);
 				}
 				index++;
 			});
