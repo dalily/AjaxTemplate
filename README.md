@@ -1,4 +1,4 @@
-Cakephp ajax bake template
+CakePHP ajax bake template
 ==========================
 
 CakePHP Template for generate Ajax crud, saving you tons of time and having a leaner code base.
