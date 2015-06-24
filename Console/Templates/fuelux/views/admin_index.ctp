@@ -5,25 +5,25 @@ $header = <<<EOF
 <?php
 
 echo \$this->Html->css(array(
-	'../ajax_bake/bootstrap/css/bootstrap',
-	'../ajax_bake/css/toastr.min',
-	'../ajax_bake/fuelux/css/fuelux',
-	'../ajax_bake/css/admin',
+	'../AjaxTemplate/bootstrap/css/bootstrap',
+	'../AjaxTemplate/css/toastr.min',
+	'../AjaxTemplate/fuelux/css/fuelux',
+	'../AjaxTemplate/css/admin',
 ), array('inline' => false));
 echo \$this->Html->script(array(
-	'../ajax_bake/js/jquery.min',
-	'../ajax_bake/js/jquery.tipsy',
-	'../ajax_bake/js/underscore-min',
-	'../ajax_bake/js/admin',
-	'../ajax_bake/js/toastr.min',
-	'../ajax_bake/bootstrap/js/bootstrap.min',
-	'../ajax_bake/fuelux/js/combobox',
-	'../ajax_bake/fuelux/js/selectlist',
-	'../ajax_bake/fuelux/js/search',
-	'../ajax_bake/fuelux/js/loader',
-	'../ajax_bake/fuelux/js/repeater',
-	'../ajax_bake/fuelux/js/ajax_data_source',
-	'../ajax_bake/fuelux/js/repeater_list',
+	'../AjaxTemplate/js/jquery.min',
+	'../AjaxTemplate/js/jquery.tipsy',
+	'../AjaxTemplate/js/underscore-min',
+	'../AjaxTemplate/js/admin',
+	'../AjaxTemplate/js/toastr.min',
+	'../AjaxTemplate/bootstrap/js/bootstrap.min',
+	'../AjaxTemplate/fuelux/js/combobox',
+	'../AjaxTemplate/fuelux/js/selectlist',
+	'../AjaxTemplate/fuelux/js/search',
+	'../AjaxTemplate/fuelux/js/loader',
+	'../AjaxTemplate/fuelux/js/repeater',
+	'../AjaxTemplate/fuelux/js/ajax_data_source',
+	'../AjaxTemplate/fuelux/js/repeater_list',
 ), array('inline' => false));
 
 \$this->viewVars['title_for_layout'] = __('$pluralHumanName');
