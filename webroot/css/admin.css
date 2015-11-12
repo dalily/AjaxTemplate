@@ -15,8 +15,9 @@ textarea, select, input[type="text"], input[type="password"], input[type="dateti
     -ms-transition: 300ms ease-in-out;
     -o-transition: 300ms ease-in-out;
     transition: 300ms ease-in-out;
-    margin: 2px 0;
+    
 }
+.input{margin: 2px 0;}
 .dataTables_wrapper {
     min-height: 83px;
     margin: 0 10px;

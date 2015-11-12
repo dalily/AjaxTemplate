@@ -12,7 +12,7 @@ CakePHP Template for generate Ajax crud, saving you tons of time and having a le
 
 AjaxTemplate  was built to generate ajax crud gui in few seconds, it allow developers to have enough flexibility to use it for both rapid prototyping and production applications -- saving you time.
 
-* AjaxTemplate relies on [jQuery](http://jquery.com), [Bootstrap 3.x](http://getbootstrap.com) and [Fuelux repeater](http://getfuelux.com) all dependencies are included, if you already have Jquery or bootstrap on your project you can easly remove theme from the generated view file to get in your way.
+* AjaxTemplate relies on [jQuery](http://jquery.com), [Bootstrap 3.x](http://getbootstrap.com) and [jQuery DataTable](https://www.datatables.net/) all dependencies are included, if you already have Jquery or bootstrap on your project you can easly remove theme from the generated view file to get in your way.
 * AjaxTemplate will add the necessary actions to your controller no extra code or files will be generated.
 * Less boilerplate code means less code to maintain, and less code to spend time unit testing.
 
