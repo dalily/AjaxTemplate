@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/!svn/ver/5949/dev/spm/app/Plugin/AdminPanel/webroot/plugins/bootbox
+END
+README.md
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/!svn/ver/5949/dev/spm/app/Plugin/AdminPanel/webroot/plugins/bootbox/README.md
+END
+bootbox.min.js
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/!svn/ver/5949/dev/spm/app/Plugin/AdminPanel/webroot/plugins/bootbox/bootbox.min.js
+END
