@@ -17,15 +17,18 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
+<?php $underscoredPluginName = str_replace(".", '', Inflector::underscore($plugin)); ?>
+
+
 
 /**
  * beforeFilter method
  *
  * @return void
  */
-function beforeFilter() { 
-	parent::beforeFilter();
-}
+	function beforeFilter() { 
+		parent::beforeFilter();
+	}
 
 /**
  * get_datagrid_data method
@@ -33,26 +36,63 @@ function beforeFilter() {
  * @return array
  */
 	public function <?php echo $admin ?>get_datagrid_data() {
-		$sort_field = $this->request->data['sort'];
-		$sort_order = $this->request->data['order'];
-		$limit = $this->request->data['limit'];
-		$page = $this->request->data['page'];
-		$conditions = isset($this->request->data['conditions'])? $this->request->data['conditions'] : array();
+
+		$limit = "10";
 		
+		if ( isset( $this->params['data']['start'] ) && $this->params['data']['length'] != '-1' )
+		{
+			$limit = $this->params['data']['length'];
+		}
+
+		$page = "1";
+		
+		if ( isset( $this->params['data']['start'] ))
+		{
+			$page = ($this->params['data']['start'] / $limit) + 1;
+		}
+
+		$order = "";
+		
+		if ( isset( $this->params['data']['order'] ) )
+		{
+			$order = "";
+
+			foreach ($this->params['data']['order'] as $i => $datum)
+			{
+				if ( $this->params['data']['columns'][$datum['column']]['orderable'] == "true" )
+				{
+					if(!empty($order)) $order .= ", ";
+					$order .= "".$this->params['data']['columns'][$datum['column']]['data']." ".$datum['dir'];
+				}
+			}
+		}
+
+		if($order == "") $order = "<?php echo $currentModelName; ?>.id DESC";
+		
+		$conditions = array();
+		
+		if ( isset($this->params['data']['filter']))
+		{
+			$conditions = array($this->params['data']['filter']);
+		}
+
 		$this->Paginator->settings = array(
 			'conditions' => $conditions,
-			'limit'	=> $limit, 
-			'order' => array(
-				$sort_field => $sort_order
-			),
-			'page' => $page
+			'limit' => $limit,
+			'page' => $page,
+			'order' => $order
 		);
 
-		$unformated_data = $this->Paginator->paginate();
-		$formated_data = $this->__format_datagrid_data($unformated_data);
-		$data = array('rows' => $formated_data, 'total' => $this->params['paging']['<?php echo $currentModelName; ?>']['count']);
- 		$this->set('data', $data);
-        $this->set('_serialize', 'data');
+		$datum = $this->Paginator->paginate('<?php echo $currentModelName; ?>');
+
+		$data = array(
+			"draw" => (isset($this->params['data']['draw']))? $this->params['data']['draw'] : 1, 
+			"recordsTotal" => $this->params['paging']['<?php echo $currentModelName; ?>']['count'], 
+			"recordsFiltered" => $this->params['paging']['<?php echo $currentModelName; ?>']['count'],
+    		"data" => $datum
+		);
+		$this->set('data', $data);
+		$this->set('_serialize', 'data');
 	}
 /**
  * __format_datagrid_data method
@@ -167,43 +207,18 @@ function beforeFilter() {
  */
 	public function <?php echo $admin ?>delete() {
 
-		$data = $this->request->data('<?php echo $currentModelName; ?>');
-		$action = !empty($data['action']) ? $data['action'] : null;
-		$ids = array();
-		
-		foreach ($data as $id => $value) {
-			if (is_array($value) && !empty($value['id'])) {
-				$ids[] = $id;
-			}
-		}
+		$id = (isset($this->request->data['id']))? $this->request->data['id'] : -1;
 
-		list($action, $ids) = array($action, $ids);
-
-		if(count($ids) === 0)
-		{
-			$message = __('No item selected');
+		if ($this-><?php echo $currentModelName; ?>->delete($id)) {
+			$message = __('Request deleted');
+			$result = 'success';
+		} else {
+			$message = __('An error occured');
 			$result = 'error';
 		}
-		elseif($action == null)
-		{
-			$message = __('No action selected');
-			$result = 'error';
-		}
-		else
-		{
-			$processed = $this-><?php echo $currentModelName; ?>->delete($ids);
 
-			if ($processed) {
-				$message = __('<?php echo $currentModelName; ?> deleted');
-				$result = 'success';
-			} else {
-				$message = __('An error occured');
-				$result = 'error';
-			}
-		}
-
-		$data =  array('message' =>  $message, 'result' => $result, 'action' => $action, 'ids' => $ids);
+		$data =  array('message' =>  $message, 'result' => $result, 'id' => $id);
 		
 		$this->set('data', $data);
-        $this->set('_serialize', 'data');		
+        $this->set('_serialize', 'data');
 	}

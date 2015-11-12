@@ -30,5 +30,29 @@ $(document).ready(function() {
 	$(document).on('onLoadDatagrid', function(e){
 		//$('*[data-title]:not([data-content])').tooltip();
 	});
-
 });
+
+function createButtonGroup(buttonsArr) {
+    buttonsHtml = "";
+    for (var i = 0; i < buttonsArr.length; i++) {
+        buttonParam = buttonsArr[i];
+        buttonsHtml += createButton(buttonParam.value, buttonParam.attr);
+    }
+    return buttonsHtml;
+}
+
+function createButton(value, buttonParam) {
+    if (("icon" in buttonParam)) {
+        value = '<i class="fa fa-' + buttonParam['icon'] + '"></i> ' + value;
+        delete buttonParam["icon"];
+    }
+    return '<button ' + _joinAttrubutes(buttonParam, ' ') + '>' + value + '</button> ';
+}
+
+function _joinAttrubutes(obj, sup) {
+    var out = [];
+    for (var i in obj) {
+        out.push(i + '="' + obj[i] + '"');
+    }
+    return out.join(sup);
+}
