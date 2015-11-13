@@ -1,15 +1,14 @@
 <?php
 $underscoredPluginName = Inflector::underscore($plugin);
 $header = <<<EOF
-echo <?php \$this->Html->css(array(
+ <?php echo \$this->Html->css(array(
 	'/AjaxTemplate/plugins/bootstrap/css/bootstrap.min.css',
 	'/AjaxTemplate/plugins/fontawesome/css/font-awesome.min.css',
 	'/AjaxTemplate/plugins/toastr/toastr.min',
 	'/AjaxTemplate/plugins/DataTables/css/jquery.dataTables.css',
 	'/AjaxTemplate/plugins/bootstrap-datepicker/bootstrap-datepicker3.standalone.min',
 	'/AjaxTemplate/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker',
-	'/AjaxTemplate/plugins/DataTables/css/DT_bootstrap',
-	'AjaxTemplate.admin',
+	'/AjaxTemplate/css/admin',
 ), array('inline' => false));
 echo \$this->Html->script(array(
 	'/AjaxTemplate/plugins/jquery/jquery.min.js',
@@ -20,13 +19,14 @@ echo \$this->Html->script(array(
 	'/AjaxTemplate/plugins/moment/moment-with-locales',
 	'/AjaxTemplate/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js',
 	'/AjaxTemplate/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker',
+	'/AjaxTemplate/js/admin'
 ), array('inline' => false));
 
-\$this->viewVars['title_for_layout'] = __d('$underscoredPluginName', '$pluralHumanName');
+\$this->viewVars['title_for_layout'] = __('$pluralHumanName');
 
 \$this->Html
 	->addCrumb('', '/admin', array('icon' => 'home'))
-	->addCrumb(__d('$underscoredPluginName', '${pluralHumanName}'), array('action' => 'index'));
+	->addCrumb(__('${pluralHumanName}'), array('action' => 'index'));
 ?>\n
 EOF;
 echo $header;
@@ -35,7 +35,7 @@ echo $header;
 
 <script>
 
-<?php echo "<?php  \$this->Html->scriptStart(array('inline' => false, 'block' => 'scriptBottom')); ?>"; ?>
+<?php echo "<?php  \$this->Html->scriptStart(array('inline' => false)); ?>"; ?>
 
 var <?php echo $singularVar; ?>Crud = {
 		datagrid : {},
@@ -45,7 +45,7 @@ var <?php echo $singularVar; ?>Crud = {
 		        "serverSide": true,
 		        "language": {
 					"lengthMenu": "_MENU_ Enregistrements par page",
-					"processing": '<?php echo "<?php echo \$this->Html->image(\"loading-spinner-grey.gif\"); ?>"; ?><span>&nbsp;&nbsp;Loading...</span>',
+					"processing": '<div class = "loading-message"><span>&nbsp;&nbsp;Loading...</span></div>',
 					"sInfo": "",
 					"sInfoEmpty": "",
 					"zeroRecords" : 'aucun enregistrement trouvé' 
@@ -73,29 +73,29 @@ var <?php echo $singularVar; ?>Crud = {
 				foreach ($associations['belongsTo'] as $alias => $details) {
 					if ($field === $details['foreignKey']) {
 						$isKey = true;
-			echo "\n\t\t\t\t\t\ttitle:  '<?php echo __d('{$underscoredPluginName}', '".Inflector::humanize($alias)."'); ?>',\n\t\t\t\t\t\tdata: '{$alias}.{$details['displayField']}',";
+			echo "\n\t\t\t\t\t\ttitle:  '<?php echo __('".Inflector::humanize($alias)."'); ?>',\n\t\t\t\t\t\tdata: '{$alias}.{$details['displayField']}',";
 						break;
 					}
 				}
 			}
 			if ($isKey !== true) { 
-			echo "\n\t\t\t\t\t\ttitle: '<?php echo __d('{$underscoredPluginName}', '".Inflector::humanize($field)."'); ?>',\n\t\t\t\t\t\tdata: '{$modelClass}.{$field}',";
+			echo "\n\t\t\t\t\t\ttitle: '<?php echo __('".Inflector::humanize($field)."'); ?>',\n\t\t\t\t\t\tdata: '{$modelClass}.{$field}',";
 			} 
 			echo "\n\t\t\t\t\t\tsortable: true";
 			if($field == 'id') echo ",";
 			//if($field == 'id') echo "\n\t\t\t\twidth : 40"; 
 			echo "\n\t\t\t\t\t}";
-			if(count($fields) != $i) echo ",";
+			if(count($fields) >= $i) echo ",";
 			endforeach; 
 			echo "\n\t\t\t\t{
-				title:  '<?php echo __d('request_managment', 'Actions'); ?>',
+				title:  '<?php echo __('Actions'); ?>',
 				data: null,
 				sortable: false
 			}],\n";
 
 			?>
 				"columnDefs": [{
-					"targets": [5],
+					"targets": [<?php echo count($fields)-2;?>],
 					"width" : "230px",
 					render: function (e, type, data, meta)
 					{	
@@ -156,14 +156,14 @@ var <?php echo $singularVar; ?>Crud = {
 				foreach ($associations['belongsTo'] as $alias => $details) {
 					if ($field === $details['foreignKey']) {
 						$isKey = true;
-						echo "\n\t\t\t\t'<td><?php echo __d('{$underscoredPluginName}', '".Inflector::humanize($alias)."'); ?></td>'+";
+						echo "\n\t\t\t\t'<td><?php echo __('".Inflector::humanize($alias)."'); ?></td>'+";
 						break;
 					}
 				}
 			}
 
 			if ($isKey !== true) { 
-				echo "\n\t\t\t\t'<td><?php echo __d('{$underscoredPluginName}', '".Inflector::humanize($field)."'); ?></td>'+";
+				echo "\n\t\t\t\t'<td><?php echo __('".Inflector::humanize($field)."'); ?></td>'+";
 			} 
 			echo "\n\t\t\t\t\t'<td>'+d.{$modelClass}.{$field}+'</td>'+";
 			echo "\n\t\t\t\t'</tr>'+";
@@ -171,9 +171,9 @@ var <?php echo $singularVar; ?>Crud = {
 			echo "\n\t\t\t\t'</table>';";
 			?>	
 		},
-		addRow : function(row){
+		addRow : function(postData){
 			var formURL = $('#add_<?php echo $singularVar; ?>_form').attr("action");
-			$('#<?php echo $singularVar; ?>_datagrid').trigger('dialogLoader', 'show');
+			$('#<?php echo $modelClass; ?>AddDialog').trigger('dialogLoader', 'show');
 			$.ajax(
 			{
 				url : formURL,
@@ -191,13 +191,13 @@ var <?php echo $singularVar; ?>Crud = {
 					{
 						toastr.error(response.message); 
 					}
-					$('#<?php echo $singularVar; ?>_datagrid').trigger('dialogLoader', 'hide');
+					$('#<?php echo $modelClass; ?>AddDialog').trigger('dialogLoader', 'hide');
 					$('#<?php echo $modelClass; ?>AddDialog').modal('hide'); 
 				},
 				error: function(jqXHR, textStatus, errorThrown) 
 				{
-					$('#<?php echo $singularVar; ?>_datagrid').trigger('dialogLoader', 'hide');
-					toastr.error("<?php echo "<?php echo __d('{$underscoredPluginName}', 'An error occured please try again!'); ?>"; ?>");
+					$('#<?php echo $modelClass; ?>AddDialog').trigger('dialogLoader', 'hide');
+					toastr.error("<?php echo "<?php echo __('An error occured please try again!'); ?>"; ?>");
 				}
 			});
 			
@@ -207,7 +207,7 @@ var <?php echo $singularVar; ?>Crud = {
 			$('#<?php echo $singularVar; ?>_datagrid').trigger('loader', 'show');
 			$.ajax(
 			{
-				url : '<?php  echo Router::url(array('action' => 'delete', 'ext' => 'json'));?>',
+				url : '<?php echo "<?php  echo Router::url(array('action' => 'delete', 'ext' => 'json'));?>"; ?>',
 				type: "POST",
 				data : {id : id},
 				success:function(response, textStatus, jqXHR) 
@@ -219,20 +219,20 @@ var <?php echo $singularVar; ?>Crud = {
 					}
 					else
 					{
-						toastr.error(response.message); 
+						toastr.error(response.message);
 					}
 					$('#<?php echo $singularVar; ?>_datagrid').trigger('loader', 'hide');
 				},
 				error: function(jqXHR, textStatus, errorThrown) 
 				{
 					$('#<?php echo $singularVar; ?>_datagrid').trigger('loader', 'hide');
-					toastr.error("<?php echo "<?php echo __d('{$underscoredPluginName}', 'An error occured please try again!'); ?>"; ?>");
+					toastr.error("<?php echo "<?php echo __('An error occured please try again!'); ?>"; ?>");
 				}
 			});
 		},
 		updateRow : function(data){
 			var formURL = $('#edit_<?php echo $singularVar; ?>_form').attr("action");
-			$('#<?php echo $singularVar; ?>_datagrid').trigger('dialogLoader', 'show')
+			$('#<?php echo $modelClass; ?>EditDialog').trigger('dialogLoader', 'show')
 			$.ajax(
 			{
 				url : formURL,
@@ -250,13 +250,13 @@ var <?php echo $singularVar; ?>Crud = {
 					{
 						toastr.error(response.message); 
 					}
-					 $('#<?php echo $singularVar; ?>_datagrid').trigger('dialogLoader', 'hide'); 
+					 $('#<?php echo $modelClass; ?>EditDialog').trigger('dialogLoader', 'hide'); 
 					$('#<?php echo $modelClass; ?>EditDialog').modal('hide'); 
 				},
 				error: function(jqXHR, textStatus, errorThrown) 
 				{
-	  				$('#<?php echo $singularVar; ?>_datagrid').trigger('dialogLoader', 'hide');
-	  				toastr.error("<?php echo "<?php echo __d('{$underscoredPluginName}', 'An error occured please try again!'); ?>"; ?>");
+	  				$('#<?php echo $modelClass; ?>EditDialog').trigger('dialogLoader', 'hide');
+	  				toastr.error("<?php echo "<?php echo __('An error occured please try again!'); ?>"; ?>");
 				}
 			});
 		}
@@ -275,7 +275,7 @@ var <?php echo $singularVar; ?>Crud = {
 			var id = $(this).attr("action-id");
 			var tr = $(this).closest("tr");
 			
-			if(confirm("<?php echo "<?php echo __d('{$underscoredPluginName}', 'Are you sure'); ?>"; ?>")){
+			if(confirm("<?php echo "<?php echo __('Are you sure'); ?>"; ?>")){
 				<?php echo $singularVar; ?>Crud.deleteRow(id, tr);
 			}
 			
@@ -307,7 +307,7 @@ var <?php echo $singularVar; ?>Crud = {
 		$(document).on('click', '.btn-edit', function(event){
 			$('#edit_<?php echo $singularVar; ?>_form').find('input, select').val('');
 			var data = <?php echo $singularVar; ?>Crud.datagrid.row($(this).closest('tr')).data();
-			console.log(data);
+
 			$('#edit_<?php echo $singularVar; ?>_form input, #edit_<?php echo $singularVar; ?>_form select').each(function(){
 				
 				if($(this).attr('id'))
@@ -367,7 +367,18 @@ var <?php echo $singularVar; ?>Crud = {
 					this.selectedIndex = -1;
 			});
 		};
-		
+
+		$(document).on('dialogLoader', '.modal', function(e, action){
+
+			if(action == 'hide')
+			{
+				$(this).find('.loading-message').hide();
+			}
+			else
+			{
+				$(this).find('.loading-message').show();
+			}
+		});	
 	});
 
 <?php echo "<?php \$this->Html->scriptEnd(); ?>"; ?>
@@ -378,10 +389,9 @@ var <?php echo $singularVar; ?>Crud = {
 		<div class="datagrid-toolbar">
 			<div class="col-xs-12 col-sm-6 col-md-8 no-padding">
 				<!-- Button trigger modal -->
-				<?php echo "<?php  echo \$this->Croogo->adminAction(\n
-						__d('{$underscoredPluginName}', 'New {$modelClass}'), '#',\n
-						array('button' => 'primary', 'data-toggle' => 'modal', 'data-target' =>'#{$modelClass}AddDialog')\n
-					);?>"; ?>
+				<a htref = "#" class = "btn btn-primary" data-toggle = "modal" data-target = "#<?php echo $modelClass; ?>AddDialog" >
+					<?php echo "<?php echo __(\"New {$modelClass}\"); ?>"; ?>
+				</a>
 			</div>
 			<div class="col-xs-6 col-md-4 no-padding">
 			  	<div class="datagrid-search" id = "<?php echo $modelClass; ?>Filter">
@@ -418,12 +428,12 @@ var <?php echo $singularVar; ?>Crud = {
 							<input class="hidden hidden-field" name="column" readonly="readonly" aria-hidden="true" type="text" value = "<?php echo $modelClass; ?>.id">
 						</div>
 						<div class="search input-group">
-							<input type="search" class="form-control" placeholder="<?php echo "<?php  echo __d('{$underscoredPluginName}', 'Search by Id');  ?>"; ?>"/>
+							<input type="search" class="form-control" placeholder="<?php echo "<?php  echo __('Search by Id');  ?>"; ?>"/>
 						  	<span class="input-group-btn">
 								<button class="btn btn-default" type="button">
 							  		<span class="glyphicon glyphicon-search"></span>
 							  		<span class="sr-only">
-							  		<?php echo "<?php  echo __d('{$underscoredPluginName}', 'Search');  ?>"; ?>
+							  		<?php echo "<?php  echo __('Search');  ?>"; ?>
 							 		</span>
 								</button>
 						  	</span>
@@ -449,12 +459,12 @@ var <?php echo $singularVar; ?>Crud = {
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span>
 					<span class="sr-only">
-						<?php echo "<?php  echo __d('{$underscoredPluginName}', 'Close');  ?>"; ?>
+						<?php echo "<?php  echo __('Close');  ?>"; ?>
 
 					</span>
 				</button>
 				<h4 class="modal-title">
-					<?php echo "<?php  echo __d('{$underscoredPluginName}', 'Add {$modelClass}');  ?>"; ?>
+					<?php echo "<?php  echo __('Add {$modelClass}');  ?>"; ?>
 				</h4>
 			</div>
 
@@ -473,14 +483,14 @@ var <?php echo $singularVar; ?>Crud = {
 						switch ($schema[$field]['type']) {
 							case 'datetime':
 								echo "\t\t\t\techo \$this->Form->input('{$field}', array(
-					'label' => __d('{$underscoredPluginName}', '{$fieldLabel}'),
+					'label' => __('{$fieldLabel}'),
 					'id' => '{$id}',
 					'type' => 'text',
 					'class' => 'datetimepicker'
 				));\n";		break;
 							case 'date':
 								echo "\t\t\t\techo \$this->Form->input('{$field}', array(
-					'label' => __d('{$underscoredPluginName}', '{$fieldLabel}'),
+					'label' => __('{$fieldLabel}'),
 					'id' => '{$id}',
 					'type' => 'text',
 					'class' => 'datepicker'
@@ -488,7 +498,7 @@ var <?php echo $singularVar; ?>Crud = {
 							break;
 							default:
 								echo "\t\t\t\techo \$this->Form->input('{$field}', array(
-					'label' => __d('{$underscoredPluginName}', '{$fieldLabel}'),
+					'label' => __('{$fieldLabel}'),
 					'id' => '{$id}'
 				));\n";
 						}
@@ -498,13 +508,13 @@ var <?php echo $singularVar; ?>Crud = {
 			echo "\t\t\t?>\n";
 ?>
 			</div>
-		  	<div class="loader" data-initialize="loader"></div>
+		  	<div class="loading-message" >&nbsp;&nbsp;Loading...</div>
 			<div class="modal-footer">
 				<?php echo "<?php \n
-				echo \$this->Html->link(__d('{$underscoredPluginName}', 'Cancel'), '#', array('class' => 'btn btn-danger', 'data-dismiss' => 'modal')); \n 
+				echo \$this->Html->link(__('Cancel'), '#', array('class' => 'btn btn-danger', 'data-dismiss' => 'modal')); \n 
 				?>"; ?>
 				<?php echo "<?php \n
-				echo \$this->Form->button(__d('{$underscoredPluginName}', 'Save'), array('class' => 'btn btn-primary'));\n
+				echo \$this->Form->button(__('Save'), array('class' => 'btn btn-primary'));\n
 				?>"; ?>
 			</div>
 		</div><!-- /.modal-content -->
@@ -525,11 +535,11 @@ var <?php echo $singularVar; ?>Crud = {
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span>
 					<span class="sr-only">
-						<?php echo "<?php  echo __d('{$underscoredPluginName}', 'Close');  ?>"; ?>
+						<?php echo "<?php  echo __('Close');  ?>"; ?>
 					</span>
 				</button>
 				<h4 class="modal-title">
-					<?php echo "<?php  echo __d('{$underscoredPluginName}', 'Edit {$modelClass}');  ?>"; ?>
+					<?php echo "<?php  echo __('Edit {$modelClass}');  ?>"; ?>
 				</h4>
 	  		</div>
 			<div class="modal-body">
@@ -548,14 +558,14 @@ var <?php echo $singularVar; ?>Crud = {
 						switch ($schema[$field]['type']) {
 							case 'datetime':
 								echo "\t\t\t\techo \$this->Form->input('{$field}', array(
-					'label' => __d('{$underscoredPluginName}', '{$fieldLabel}'),
+					'label' => __('{$fieldLabel}'),
 					'id' => '{$id}',
 					'type' => 'text',
 					'class' => 'datetimepicker'
 				));\n";		break;
 							case 'date':
 								echo "\t\t\t\techo \$this->Form->input('{$field}', array(
-					'label' => __d('{$underscoredPluginName}', '{$fieldLabel}'),
+					'label' => __('{$fieldLabel}'),
 					'id' => '{$id}',
 					'type' => 'text',
 					'class' => 'datepicker'
@@ -563,7 +573,7 @@ var <?php echo $singularVar; ?>Crud = {
 							break;
 							default:
 								echo "\t\t\t\techo \$this->Form->input('{$field}', array(
-					'label' => __d('{$underscoredPluginName}', '{$fieldLabel}'),
+					'label' => __('{$fieldLabel}'),
 					'id' => '{$id}'
 				));\n";
 						}
@@ -573,13 +583,13 @@ var <?php echo $singularVar; ?>Crud = {
 			echo "\t\t\t?>\n";
 ?>
 			</div>
-	  		<div class="loader"  data-initialize="loader"></div>
+	  		<div class="loading-message" >&nbsp;&nbsp;Loading...</div>
 			<div class="modal-footer">
 				<?php echo "<?php \n
-				echo \$this->Html->link(__d('{$underscoredPluginName}', 'Cancel'), '#', array('class' => 'btn btn-danger', 'data-dismiss' => 'modal')); \n 
+				echo \$this->Html->link(__('Cancel'), '#', array('class' => 'btn btn-danger', 'data-dismiss' => 'modal')); \n 
 				?>"; ?>
 				<?php echo "<?php \n
-				echo \$this->Form->button(__d('{$underscoredPluginName}', 'Save'), array('class' => 'btn btn-primary'));\n
+				echo \$this->Form->button(__('Save'), array('class' => 'btn btn-primary'));\n
 				?>"; ?>
 			</div>
 		</div><!-- /.modal-content -->

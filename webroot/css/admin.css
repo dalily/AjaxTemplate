@@ -86,7 +86,7 @@ table.dataTable tbody tr {
   margin-left: -100px;
 }
 .loading-message {
-  display: inline-block;
+  display: none;
   min-width: 125px;
   padding: 10px;
   margin: 0 auto;
