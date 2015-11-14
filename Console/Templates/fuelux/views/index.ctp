@@ -508,7 +508,7 @@ var <?php echo $singularVar; ?>Crud = {
 			echo "\t\t\t?>\n";
 ?>
 			</div>
-		  	<div class="loading-message" ></div>
+		  	<div class="loading-message" >&nbsp;&nbsp;Loading...</div>
 			<div class="modal-footer">
 				<?php echo "<?php \n
 				echo \$this->Html->link(__('Cancel'), '#', array('class' => 'btn btn-danger', 'data-dismiss' => 'modal')); \n 
@@ -583,7 +583,7 @@ var <?php echo $singularVar; ?>Crud = {
 			echo "\t\t\t?>\n";
 ?>
 			</div>
-	  		<div class="loading-message" ></div>
+	  		<div class="loading-message" >&nbsp;&nbsp;Loading...</div>
 			<div class="modal-footer">
 				<?php echo "<?php \n
 				echo \$this->Html->link(__('Cancel'), '#', array('class' => 'btn btn-danger', 'data-dismiss' => 'modal')); \n 
