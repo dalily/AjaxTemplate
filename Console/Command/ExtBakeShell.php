@@ -20,7 +20,6 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::uses('Model', 'Model');
 App::uses('BakeShell', 'Console/Command');
 
 /**
@@ -37,7 +36,7 @@ class ExtBakeShell extends BakeShell {
  * @var array
  */
 
-public $tasks = array('Project', 'DbConfig', 'AjaxTemplate.ExtModel', 'Controller', 'AjaxTemplate.ExtView', 'Plugin', 'Fixture', 'Test');
+public $tasks = array('Project', 'DbConfig', 'Model', 'Controller', 'AjaxTemplate.ExtView', 'Plugin', 'Fixture', 'Test');
 
 /**
  * The connection being used.
@@ -126,7 +125,7 @@ public $tasks = array('Project', 'DbConfig', 'AjaxTemplate.ExtModel', 'Controlle
 
 	public function runCommand($command, $argv) {
 		if (strtolower($command) == 'model') {
-			$command = 'ext_model';
+			$command = 'model';
 		}
 		if (strtolower($command) == 'controller') {
 			$command = 'controller';
@@ -135,6 +134,59 @@ public $tasks = array('Project', 'DbConfig', 'AjaxTemplate.ExtModel', 'Controlle
 			$command = 'ext_view';
 		}
 		return parent::runCommand($command, $argv);
+	}
+
+/**
+ * Gets the option parser instance and configures it.
+ *
+ * @return ConsoleOptionParser
+ */
+	public function getOptionParser() {
+		$parser = parent::getOptionParser();
+
+		$parser->description(
+			__d('cake_console',	'The Bake script generates controllers, views and models for your application.' .
+			' If run with no command line arguments, Bake guides the user through the class creation process.' .
+			' You can customize the generation process by telling Bake where different parts of your application are using command line arguments.')
+		)->addSubcommand('all', array(
+			'help' => __d('cake_console', 'Bake a complete MVC. optional <name> of a Model')
+		))->addSubcommand('project', array(
+			'help' => __d('cake_console', 'Bake a new app folder in the path supplied or in current directory if no path is specified'),
+			'parser' => $this->Project->getOptionParser()
+		))->addSubcommand('plugin', array(
+			'help' => __d('cake_console', 'Bake a new plugin folder in the path supplied or in current directory if no path is specified.'),
+			'parser' => $this->Plugin->getOptionParser()
+		))->addSubcommand('db_config', array(
+			'help' => __d('cake_console', 'Bake a database.php file in config directory.'),
+			'parser' => $this->DbConfig->getOptionParser()
+		))->addSubcommand('model', array(
+			'help' => __d('cake_console', 'Bake a model.'),
+			'parser' => $this->Model->getOptionParser()
+		))->addSubcommand('view', array(
+			'help' => __d('cake_console', 'Bake views for controllers.'),
+			'parser' => $this->View->getOptionParser()
+		))->addSubcommand('ext_view', array(
+			'help' => __d('cake_console', 'Bake views for controllers.'),
+			'parser' => $this->View->getOptionParser()
+		))->addSubcommand('controller', array(
+			'help' => __d('cake_console', 'Bake a controller.'),
+			'parser' => $this->Controller->getOptionParser()
+		))->addSubcommand('fixture', array(
+			'help' => __d('cake_console', 'Bake a fixture.'),
+			'parser' => $this->Fixture->getOptionParser()
+		))->addSubcommand('test', array(
+			'help' => __d('cake_console', 'Bake a unit test.'),
+			'parser' => $this->Test->getOptionParser()
+		))->addOption('connection', array(
+			'help' => __d('cake_console', 'Database connection to use in conjunction with `bake all`.'),
+			'short' => 'c',
+			'default' => 'default'
+		))->addOption('theme', array(
+			'short' => 't',
+			'help' => __d('cake_console', 'Theme to use when baking code.')
+		));
+
+		return $parser;
 	}
 
 }
