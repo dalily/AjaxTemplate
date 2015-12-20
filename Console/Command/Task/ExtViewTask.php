@@ -16,7 +16,7 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::uses('ViewTask', 'Console/Command/Task'); 
+App::uses('ViewTask', 'Console/Command/Task');
 
 /**
  * Task class for creating and updating model files.
@@ -25,14 +25,20 @@ App::uses('ViewTask', 'Console/Command/Task');
  */
 class ExtViewTask extends ViewTask {
 
-	public $name = 'View';
+	public $name = "View";
 	
 	public $noTemplateActions = array('add', 'edit','delete', 'view','admin_delete', 'admin_view',  'admin_add', 'admin_edit', 'admin_get_datagrid_data', 'get_datagrid_data');
 	
+/**
+ * Execution method always used for tasks
+ *
+ * @return mixed
+ */
 	public function execute() {
-		
 		parent::execute();
 	}
+
+
 /**
  * Loads Controller and sets variables for the template
  * Available template variables

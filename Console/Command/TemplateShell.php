@@ -30,12 +30,51 @@ class TemplateShell extends Shell {
  *
  * @return void
  */
-	public function main() {
+	public function main0() {
 		$model = $this->in('Model name:');
 		$controller = Inflector::pluralize($model);
 
 		$controllerActions = $this->in('Do you want to bake the controller with admin prefix: yes/no', 'y/n', 'n');
 
+		$usePlugin = $this->in("Do you want to bake in plugin: yes/no", 'y/n', 'y');
+		if ($usePlugin == 'y') {
+			$pluginName = $this->in('Name of your plugin:', null);
+			
+			if ($pluginName == '') {
+				$usePlugin = 'n';
+			}
+		}
+
+		
+		if ($controllerActions == 'y') {
+			$controllerActions = '--admin';
+		} 
+		else
+		{
+			$controllerActions = '--public';
+		}
+		
+		$theme = '--theme fuelux';
+		$plugin = '';
+
+		if ($usePlugin == 'y') {
+			$plugin .= "-p $pluginName";
+		}	
+
+		$modelCommand = "ajax_template.ext_bake model $plugin $model $theme";
+		$controllerCommand = "ajax_template.ext_bake controller $plugin $controller $controllerActions $theme";
+		$viewCommand = "ajax_template.ext_bake view $plugin $controller $theme";
+		$this->out($modelCommand);
+		$this->out($controllerCommand);
+		$this->out($viewCommand);
+		$this->dispatchShell($modelCommand);
+		$this->dispatchShell($controllerCommand);
+		$this->dispatchShell($viewCommand);
+	}
+	public function main() {
+		$model = $this->in('Model name:');
+		$controller = Inflector::pluralize($model);
+		$controllerActions = $this->in('Do you want to bake the controller with admin prefix: yes/no', 'y/n', 'n');
 		$usePlugin = $this->in("Do you want to bake in plugin: yes/no", 'y/n', 'n');
 		if ($usePlugin == 'y') {
 			$pluginName = $this->in('Name of your plugin:', null, '');
@@ -43,7 +82,6 @@ class TemplateShell extends Shell {
 				$usePlugin = 'n';
 			}
 		}
-
 		
 		if ($controllerActions == 'y') {
 			$controllerActions = '--admin';
@@ -59,16 +97,16 @@ class TemplateShell extends Shell {
 		$controllerCommand = "ajax_template.ext_bake controller $controller $controllerActions";
 		$viewCommand = "ajax_template.ext_bake view $controller";
 		$postfix = " --theme $theme";
-
 		if ($usePlugin == 'y') {
 			$postfix .= " --plugin $pluginName";
 		}
-
+		$this->out($modelCommand . $postfix);
+		$this->out($controllerCommand . $postfix);
+		$this->out($viewCommand . $postfix);
 		$this->dispatchShell($modelCommand . $postfix);
 		$this->dispatchShell($controllerCommand . $postfix);
 		$this->dispatchShell($viewCommand . $postfix);
 	}
-
 /**
  * Possible Subthemes
  *
